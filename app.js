@@ -5,6 +5,8 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var session = require('express-session');
 var FileStore = require('session-file-store')(session);
+var passport = require('passport');
+var authenticate = require('./authenticate');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -46,6 +48,10 @@ app.use(session( {
   store: new FileStore()
 }));
 
+app.use(passport.initialize());
+app.use(passport.session());
+
+
 // Need access to home and /users (for registration, logging in and logout)
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
@@ -59,23 +65,15 @@ app.use('/users', usersRouter);
 
 // Authorization middleware being added here
 function auth (req, res, next) {
-  console.log(req.session);
 
-  if (!req.session.user) {   
+  if (!req.user) {   
     var err = new Error('You are not authenticated!');
-    res.setHeader('WWW-Authenticate', 'Basic');
-    err.status = 401;       
-    return next(err);; 
+    err.status = 403;       
+    return next(err);
   } else {
-    // There is some sort of req.session.user object
-    if (req.session.user === 'authenticated') {
-      return next(); // authorized
-    } else {
-      var err = new Error('You are not authenticated!');
-      err.status = 403;
-      return next(err);
-    }
+      next(); // authorized
   }
+  
 } 
  
 app.use(auth);
