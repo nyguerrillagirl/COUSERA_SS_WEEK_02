@@ -46,6 +46,9 @@ app.use(session( {
   store: new FileStore()
 }));
 
+// Need access to home and /users (for registration, logging in and logout)
+app.use('/', indexRouter);
+app.use('/users', usersRouter);
 
 // app.use(function(req, res, next) {
 //   res.setHeader('WWW-Authenticate', 'Basic');
@@ -55,53 +58,32 @@ app.use(session( {
 // });
 
 // Authorization middleware being added here
-function auth(req, res, next) {
+function auth (req, res, next) {
   console.log(req.session);
 
-  if (!req.session.user) {
-    var authHeader = req.headers.authorization;
-    if (!authHeader) {
-       var err = new Error('You are not authenticated!');
-      res.setHeader('WWW-Authenticate', 'Basic');
-      err.status = 401;
-      return next(err);
-    }
-  
-    var auth = new Buffer.from
-      (authHeader.split(' ')[1], 'base64').toString().split(':');
-  
-    var username = auth[0];
-    var password = auth[1];
-  
-    if (username === 'admin' && password === 'password') {
-      //res.cookie('user', 'admin', { signed: true})
-      req.session.user = 'admin';
-      return next();
-    } else {
-      var err = new Error('You are not authenticated!');
-      res.setHeader('WWW-Authenticate', 'Basic');
-      err.status = 401;
-      return next(err);
-    }
+  if (!req.session.user) {   
+    var err = new Error('You are not authenticated!');
+    res.setHeader('WWW-Authenticate', 'Basic');
+    err.status = 401;       
+    return next(err);; 
   } else {
-    if (req.session.user === 'admin') {
-      return next();
+    // There is some sort of req.session.user object
+    if (req.session.user === 'authenticated') {
+      return next(); // authorized
     } else {
       var err = new Error('You are not authenticated!');
-      err.status = 401;
+      err.status = 403;
       return next(err);
     }
   }
-  
-}
-
+} 
+ 
 app.use(auth);
 
 // Enables us to serve static page from public folder
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+
 app.use('/dishes', dishRouter);
 app.use('/promotions', promoRouter);
 app.use('/leaders', leaderRouter);
