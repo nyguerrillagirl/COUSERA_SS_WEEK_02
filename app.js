@@ -7,6 +7,7 @@ var session = require('express-session');
 var FileStore = require('session-file-store')(session);
 var passport = require('passport');
 var authenticate = require('./authenticate');
+var config = require('./config');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -16,7 +17,7 @@ var leaderRouter = require('./routes/leaderRouter');
 
 const mongoose = require('mongoose');
 
-const url = 'mongodb://localhost:27017/conFusion';
+const url = config.mongoUrl;
 const connect = mongoose.connect(url);
 
 connect.then((db) => {
@@ -40,21 +41,16 @@ app.use(express.urlencoded({ extended: false }));
 //app.use(cookieParser('12345-67890-09876-54321'));
 
 // Sets  up the Express session middleware
-app.use(session( {
-  name: 'session-id',
-  secret: '12345-67890-09876-54321',
-  saveUninitialized: false,
-  resave: false,
-  store: new FileStore()
-}));
-
-app.use(passport.initialize());
-app.use(passport.session());
+// app.use(session( {
+//   name: 'session-id',
+//   secret: '12345-67890-09876-54321',
+//   saveUninitialized: false,
+//   resave: false,
+//   store: new FileStore()
+//  }));
 
 
-// Need access to home and /users (for registration, logging in and logout)
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+//app.use(passport.session());
 
 // app.use(function(req, res, next) {
 //   res.setHeader('WWW-Authenticate', 'Basic');
@@ -64,19 +60,25 @@ app.use('/users', usersRouter);
 // });
 
 // Authorization middleware being added here
-function auth (req, res, next) {
+// function auth (req, res, next) {
 
-  if (!req.user) {   
-    var err = new Error('You are not authenticated!');
-    err.status = 403;       
-    return next(err);
-  } else {
-      next(); // authorized
-  }
+//   if (!req.user) {   
+//     var err = new Error('You are not authenticated!');
+//     err.status = 403;       
+//     return next(err);
+//   } else {
+//       next(); // authorized
+//   }
   
-} 
+// } 
  
-app.use(auth);
+// app.use(auth);
+
+app.use(passport.initialize());
+// Need access to home and /users (for registration, logging in and logout)
+// Without the need for authorization
+app.use('/', indexRouter);
+app.use('/users', usersRouter);
 
 // Enables us to serve static page from public folder
 app.use(express.static(path.join(__dirname, 'public')));
