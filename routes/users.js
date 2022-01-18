@@ -10,7 +10,13 @@ router.use(bodyParser.json());
 
 /* GET users listing. */
 router.get('/', authenticate.verifyUser, authenticate.verifyAdminUser,function(req, res, next) {
-  res.send('respond with a resource');
+  User.find({})
+    .then((users) => {
+      res.statusCode = 200;
+      res.setHeader('Content-Type', 'application/json');
+      res.json(users);
+    }, (err) => next(err))
+    .catch((err) => next(err));
 });
 
 // The endpoint is /user/signup
@@ -57,6 +63,7 @@ router.post('/signup', function(req, res, next){
     res.json({success: true, token: token, status: 'You are successfully logged in.'});             
   });
   
+// Note: This is a sessions based-logout DOES NOT WORK for JWT  
 router.get('/logout', (req, res) => {
   if (req.session) {
     // The session exists - let's remove it
