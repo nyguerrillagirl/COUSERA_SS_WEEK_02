@@ -41,8 +41,8 @@ exports.jwtPassport = passport.use(new JwtStrategy(opts,
     }));
 
 // Check if user is admin
-function verifyAdminUser(req, res, next) {
-    console.log("===> verifyAdminUser");
+function verifyAdmin(req, res, next) {
+    console.log("===> verifyAdmin");
     if (req.isAuthenticated()) {
         if (req.user.admin) {
             return next();
@@ -60,4 +60,4 @@ function verifyAdminUser(req, res, next) {
 }
 // We will be creating sessions
 exports.verifyUser = passport.authenticate('jwt', { session: false});
-exports.verifyAdminUser = verifyAdminUser;
+exports.verifyAdmin = verifyAdmin;
