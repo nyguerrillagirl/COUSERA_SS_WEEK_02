@@ -2,6 +2,7 @@ var express = require('express');
 const bodyParser = require('body-parser');
 var User = require('../models/user');
 var passport = require('passport');
+const cors = require('./cors');
 
 var authenticate = require('../authenticate');
 
@@ -9,7 +10,7 @@ var router = express.Router();
 router.use(bodyParser.json());
 
 /* GET users listing. */
-router.get('/', authenticate.verifyUser, authenticate.verifyAdmin,function(req, res, next) {
+router.get('/', cors.corsWithOptions, authenticate.verifyUser, authenticate.verifyAdmin,function(req, res, next) {
   User.find({})
     .then((users) => {
       res.statusCode = 200;
@@ -20,7 +21,7 @@ router.get('/', authenticate.verifyUser, authenticate.verifyAdmin,function(req, 
 });
 
 // The endpoint is /user/signup
-router.post('/signup', function(req, res, next){
+router.post('/signup', cors.corsWithOptions,function(req, res, next){
   User.register(
     new User({username: req.body.username}), 
     req.body.password, 
@@ -56,7 +57,7 @@ router.post('/signup', function(req, res, next){
   });
 
   // Add middleware to authenticate first
-  router.post('/login', passport.authenticate('local'),(req, res) => {
+  router.post('/login', cors.corsWithOptions, passport.authenticate('local'),(req, res) => {
     var token = authenticate.getToken({_id: req.user._id});
     res.statusCode = 200;
     res.setHeader('Content-Type', 'application/json');
@@ -64,7 +65,7 @@ router.post('/signup', function(req, res, next){
   });
   
 // Note: This is a sessions based-logout DOES NOT WORK for JWT  
-router.get('/logout', (req, res) => {
+router.get('/logout', cors.corsWithOptions, (req, res) => {
   if (req.session) {
     // The session exists - let's remove it
     req.session.destroy();
