@@ -16,7 +16,7 @@ At the end of this assignment, your should have completed the following:
 ## Additional Material - Folder /docs
 
 * Assignment #4 write up
-* Assignment #4 Postman collection + environment to test this assignment
+*Assignment #4 Postman collection + environment to test this assignment
 
 
 
