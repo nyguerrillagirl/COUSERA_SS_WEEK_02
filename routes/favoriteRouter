@@ -27,19 +27,54 @@ favoriteRouter.route('/')
    
  })
 .post(cors.corsWithOptions,authenticate.verifyUser, (req, res, next) => {
-
-    console.log("===> POST favorites", req.body.toString());
-    // Leaders.create(req.body)
-    // .then((leader) => {
-    //     console.log('Leader Created ', leader);
-    //     res.statusCode = 200;
-    //     res.setHeader('Content-Type', 'application/json');
-    //     res.json(leader);
-    // }, (err) => next(err))
-    //.catch((err) => next(err));
-    res.statusCode = 403;
-    res.end('1POST operation not implemented yet on /favorites');   
-})
+    console.log("===> POST /favorites invoked.");
+    Favorites.find({user:req.user._id})
+        .then((userFavorites) => {
+            if (userFavorites && !userFavorites.length) {
+                console.log("===> POST /favorite - no favorites for user yet.");
+                // This user does not have favorites yet
+                let dishList = [];
+                let userProvidedDishList = req.body;
+                for (let i=0; i < userProvidedDishList.length; i++) {
+                    console.log("dishItem: ", userProvidedDishList[i]);
+                    dishList.push(userProvidedDishList[i]._id);
+                }
+                let favoriteItem = {user: req.user._id, dishes:dishList};
+                Favorites.create(favoriteItem)
+                    .then((favorite) => {
+                        console.log('Favorite Created ', favorite);
+                        res.statusCode = 200;
+                        res.setHeader('Content-Type', 'application/json');
+                        res.json(favorite);   
+                    }, (err) => next(err))
+                    .catch( (err) => next(err));                  
+            } else {
+                console.log("===> POST /favorite - favorites for user found.");
+                let favoriteEntry = userFavorites[0]; // get the single entry for user
+                let dishList = favoriteEntry.dishes;
+                let userProvidedDishList = req.body;
+                // For each new dishId provided - if in dishList - skip it, otherwise add
+                for (let i=0; i < userProvidedDishList.length; i++) {
+                    let newDishItem = userProvidedDishList[i]._id;
+                    if (dishList.indexOf(newDishItem) === -1) {
+                        // add this item to the dishList
+                        dishList.push(newDishItem);
+                    }
+                }
+                // Now let's update the favorites for this user in the db
+                favoriteEntry.dishes = dishList;
+                favoriteEntry.save()
+                    .then( (favorites) => {
+                        res.statusCode = 200;
+                        res.setHeader('Content-Type', 'application/json');
+                        res.json(favorites);          
+                    }, (err) => next(err))
+                    .catch((err) => next(err));
+            }
+         }, (err) => next(err))
+        .catch((err) => next(err));
+   
+ })
 .put(cors.corsWithOptions,authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
     res.statusCode = 403;
     res.end('PUT operation not supported on /favorites');
@@ -62,13 +97,9 @@ favoriteRouter.route('/')
 favoriteRouter.route('/:dishId')
 .options(cors.corsWithOptions, (req, res) => { res.sendStatus(200)})
 .get(cors.cors,(req, res,next) => {
-    // Leaders.findById(req.params.dishId)
-    // .then((leader) => {
-    //     res.statusCode = 200;
-    //     res.setHeader('Content-Type', 'application/json');
-    //     res.json(leader);
-    // }, (err) => next(err))
-    // .catch((err) => next(err));
+    res.statusCode = 403;
+    res.end('GET operation not supported on /favorites/'+ req.params.dishId);
+
 })
 .post(cors.corsWithOptions,authenticate.verifyUser, (req, res,next) => {
     // Check if user has any entries (so we can create and/or add to)
