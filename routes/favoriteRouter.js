@@ -79,17 +79,14 @@ favoriteRouter.route('/')
     res.statusCode = 403;
     res.end('PUT operation not supported on /favorites');
 })
-.delete(cors.corsWithOptions,authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
-    // Leaders.remove({})
-    // .then((resp) => {
-    //     res.statusCode = 200;
-    //     res.setHeader('Content-Type', 'application/json');
-    //     res.json(resp);
-    // }, (err) => next(err))
-    // .catch((err) => next(err));    
-    res.statusCode = 403;
-    res.end('DELETE operation not implement yet on /favorites');
-
+.delete(cors.corsWithOptions,authenticate.verifyUser, (req, res, next) => {
+    Favorites.remove({user:req.user._id})
+    .then((resp) => {
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'application/json');
+        res.json(resp);
+    }, (err) => next(err))
+    .catch((err) => next(err));
 });
 
 
@@ -116,8 +113,8 @@ favoriteRouter.route('/:dishId')
                 res.statusCode = 200;
                 res.setHeader('Content-Type', 'application/json');
                 res.json(favorite);   
-            }, (err) => next(err))
-            .catch( (err) => next(err));
+            }, (err) => {console.log("HERE 1"); next(err)})
+            .catch( (err) => {console.log("HERE 2");next(err)});
         } else {
             console.log("POST /favorites/dishId ===> user has a current list of favorite");
             var favoriteEntry = userFavorites[0]; // since always returned in a list
@@ -148,15 +145,6 @@ favoriteRouter.route('/:dishId')
     .catch((err) => next(err));  
  })
 .put(cors.corsWithOptions,authenticate.verifyUser, (req, res,next) => {
-    // Leaders.findByIdAndUpdate(req.params.leaderId, {
-    //     $set: req.body
-    // }, { new: true })
-    // .then((leader) => {
-    //     res.statusCode = 200;
-    //     res.setHeader('Content-Type', 'application/json');
-    //     res.json(leader);
-    // }, (err) => next(err))
-    // .catch((err) => next(err));
     res.statusCode = 403;
     res.end('PUT operation not supported on /favorites/'+ req.params.dishId);
 

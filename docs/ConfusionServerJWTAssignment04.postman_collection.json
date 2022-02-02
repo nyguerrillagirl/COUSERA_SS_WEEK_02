@@ -1,0 +1,2017 @@
+{
+	"info": {
+		"_postman_id": "61035c49-a875-4423-81cf-cd7881ef84c8",
+		"name": "ConfusionServerJWTAssignment04",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "AUTHENTICATION_VERSION",
+			"item": [
+				{
+					"name": "REGISTER_USERS",
+					"item": [
+						{
+							"name": "POST_REGISTER_UNLOGGED_USER",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// Create a new account for a user that will be registered BUT not logged in\r",
+											"var date = Date.now();\r",
+											"username_registered_not_logged = \"coursera_registered_notlogged_student.\" + date;\r",
+											"password_registered_not_logged = \"password\";\r",
+											"// Add to environment for other test cases\r",
+											"pm.environment.set(\"username_registered_not_logged\", username_registered_not_logged);\r",
+											"pm.environment.set(\"password_registered_not_logged\", password_registered_not_logged);\r",
+											"\r",
+											"// Create a username and password for an unregistered user \r",
+											"username_unregistered = \"unregistered_username\"\r",
+											"password_unregistered = \"unregistered_password\";\r",
+											"// Add to environment for other test cases\r",
+											"pm.environment.set(\"unregistered_username\", username_unregistered);\r",
+											"pm.environment.set(\"unregistered_password\", password_unregistered);\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('POST_REGISTER_UNLOGGED_USER', function () {\r",
+											"    const data = pm.response.json();\r",
+											"    console.log(\"data: \" + data);\r",
+											"    pm.response.to.have.status(200);\r",
+											"    pm.expect(data.success).to.be.true;\r",
+											"    pm.expect(data.status).to.eql(\"Registration Successful!\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{ \r\n\"username\" : \"{{username_registered_not_logged}}\", \r\n\"password\": \"{{password_registered_not_logged}}\", \r\n\"firstname\" : \"Alan\", \r\n\"lastname\" : \"Turing\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/users/signup",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										"signup"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POST_REGISTER_LOGGED_USER_1",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// Create account for registered and logged in user #1\r",
+											"var date = Date.now();\r",
+											"username_registered_logged_1 = \"coursera_registered_logged_student1.\" + date;\r",
+											"password_registered_logged_1 = \"password\";\r",
+											"pm.environment.set(\"username_registered_logged_1\", username_registered_logged_1);\r",
+											"pm.environment.set(\"password_registered_logged_1\", password_registered_logged_1);\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('POST_REGISTER_LOGGED_USER_1', function () {\r",
+											"    const data = pm.response.json();\r",
+											"    pm.response.to.have.status(200);\r",
+											"    pm.expect(data.success).to.be.true;\r",
+											"    pm.expect(data.status).to.eql(\"Registration Successful!\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{ \r\n\"username\" : \"{{username_registered_logged_1}}\", \r\n\"password\": \"{{password_registered_logged_1}}\", \r\n\"firstname\" : \"James\", \r\n\"lastname\" : \"Gosling\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/users/signup",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										"signup"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POST_REGISTER_LOGGED_USER_2",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// Create account for registered and logged in user #2\r",
+											"var date = Date.now();\r",
+											"username_registered_logged_2 = \"coursera_registered_logged_student2.\" + date;\r",
+											"password_registered_logged_2 = \"password\";\r",
+											"pm.environment.set(\"username_registered_logged_2\", username_registered_logged_2);\r",
+											"pm.environment.set(\"password_registered_logged_2\", password_registered_logged_2);"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('POST_REGISTER_LOGGED_USER_2', function () {\r",
+											"    const data = pm.response.json();\r",
+											"    console.log(\"data: \" + data);\r",
+											"    pm.response.to.have.status(200);\r",
+											"    pm.expect(data.success).to.be.true;\r",
+											"    pm.expect(data.status).to.eql(\"Registration Successful!\");\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{ \r\n\"username\" : \"{{username_registered_logged_2}}\", \r\n\"password\": \"{{password_registered_logged_2}}\", \r\n\"firstname\" : \"Barbara\", \r\n\"lastname\" : \"Liskov\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/users/signup",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										"signup"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "LOGIN_ALL_USERS",
+					"item": [
+						{
+							"name": "POST_LOGIN_REGISTERED_USER_1",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('POST_LOGIN_REGISTERED_USER_1', function() {\r",
+											"    const data = pm.response.json(); // Obtain response\r",
+											"    pm.response.to.have.status(200);\r",
+											"    pm.expect(data.success).to.be.true;\r",
+											"    // Save Token\r",
+											"    let registered_logged_1_token = data.token;\r",
+											" \r",
+											"    // Save the JWT Token associated with REGISTERED LOGGED USER #1\r",
+											"    pm.environment.set('registered_logged_1_token', registered_logged_1_token);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"console.log(\"===> LOGIN REGISTERED USER 1: \", pm.environment.get(\"username_registered_logged_1\"));\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{ \r\n\"username\" : \"{{username_registered_logged_1}}\", \r\n\"password\": \"{{password_registered_logged_1}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/users/login",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POST_LOGIN_REGISTERED_USER_2",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('POST_LOGIN_REGISTERED_USER_2', function() {\r",
+											"    const data = pm.response.json(); // Obtain response\r",
+											"    pm.response.to.have.status(200);\r",
+											"    pm.expect(data.success).to.be.true;\r",
+											"    // Save Token\r",
+											"    let registered_logged_2_token = data.token;\r",
+											"    console.log('username: ' + pm.environment.get('username_registered_logged_2'));\r",
+											"    console.log('token: ' + registered_logged_2_token);\r",
+											"    // Save the JWT Token associated with REGISTERED LOGGED USER #2\r",
+											"    pm.environment.set('registered_logged_2_token', registered_logged_2_token);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{ \r\n\"username\" : \"{{username_registered_logged_2}}\", \r\n\"password\": \"{{password_registered_logged_2}}\", \r\n\"firstname\" : \"Barbara\", \r\n\"lastname\" : \"Liskov\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3000/users/login",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"users",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POST_LOGIN_ADMIN",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('POST_LOGIN_REGISTERED_USER_1', function() {\r",
+											"    const data = pm.response.json(); // Obtain response\r",
+											"    pm.response.to.have.status(200);\r",
+											"    pm.expect(data.success).to.be.true;\r",
+											"    // Save Token\r",
+											"    let admin_token = data.token;\r",
+											"    console.log('username: ' + pm.environment.get(\"admin_username\"));\r",
+											"    console.log('admin token: ' + admin_token);\r",
+											"    // Save the JWT Token associated with REGISTERED LOGGED USER #1\r",
+											"    pm.environment.set('admin_token', admin_token);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"let admin_username = pm.collectionVariables.get(\"admin_username\");\r",
+											"let admin_password = pm.collectionVariables.get(\"admin_password\");\r",
+											"console.log(\"===> pre-request login admin: \", admin_username);\r",
+											"pm.environment.set(\"admin_username\", admin_username);\r",
+											"pm.environment.set(\"admin_password\", admin_password);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{ \r\n\"username\" : \"{{admin_username}}\", \r\n\"password\": \"{{admin_password}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/users/login",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POST_LOGIN_UNREGISTERED_USER",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('POST_LOGIN_UNREGISTERED_USER_FAIL', function() {\r",
+											"   pm.response.to.have.status(401);  \r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{ \r\n\"username\" : \"bozo_the_clown\", \r\n\"password\": \"bozo_the_clown\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3000/users/login",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"users",
+										"login"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "HOME",
+					"item": [
+						{
+							"name": "GET_HOME_PAGE",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('GET_ALL_HOME_PAGE', function() {\r",
+											"    pm.response.to.have.status(200);\r",
+											"    pm.expect(pm.response.text()).to.include(\"Express\");\r",
+											"});\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET_HOME_PAGE_ADMIN",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('GET_ALL_HOME_PAGE_ADMIN', function() {\r",
+											"    pm.response.to.have.status(200);\r",
+											"    pm.expect(pm.response.text()).to.include(\"Express\");\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var authTokenValue = \"Bearer \" + pm.environment.get(\"admin_token\");\r",
+											"//pm.request.upsertHeader({\"Authorization\": authTokenValue});\r",
+											"pm.request.headers.add({\r",
+											"    'key': \"Authorization\",\r",
+											"    'value': authTokenValue\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET_HOME_PAGE_USER_1",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('GET_HOME_PAGE_USER_1', function() {\r",
+											"   pm.response.to.have.status(200);\r",
+											"    pm.expect(pm.response.text()).to.include(\"Express\");\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var authTokenValue = \"Bearer \" + pm.environment.get(\"registered_logged_1_token\");\r",
+											"//pm.request.upsertHeader({\"Authorization\": authTokenValue});\r",
+											"pm.request.headers.add({\r",
+											"    'key': \"Authorization\",\r",
+											"    'value': authTokenValue\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "SETUP_THE_DISHES",
+					"item": [
+						{
+							"name": "Adds All Dishes Request",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// Set up the four key dishes \r",
+											"DishObject = \r",
+											"{\r",
+											"  \"dishes\": [\r",
+											"    {\r",
+											"      \"name\": \"Uthappizza\",\r",
+											"      \"image\": \"images/uthappizza.png\",\r",
+											"      \"category\": \"mains\",\r",
+											"      \"label\": \"Hot\",\r",
+											"      \"price\": \"4.99\",\r",
+											"      \"featured\": \"true\",\r",
+											"      \"description\": \"A unique combination of Indian Uthappam (pancake) and Italian pizza, topped with Cerignola olives, ripe vine cherry tomatoes, Vidalia onion, Guntur chillies and Buffalo Paneer.\",\r",
+											"      \"comments\": [ ]\r",
+											"    },\r",
+											"    {\r",
+											"      \"name\": \"Zucchipakoda\",\r",
+											"      \"image\": \"images/zucchipakoda.png\",\r",
+											"      \"category\": \"appetizer\",\r",
+											"      \"label\": \"\",\r",
+											"      \"price\": \"1.99\",\r",
+											"      \"featured\": \"false\",\r",
+											"      \"description\": \"Deep fried Zucchini coated with mildly spiced Chickpea flour batter accompanied with a sweet-tangy tamarind sauce\",\r",
+											"      \"comments\": [ ]\r",
+											"    },\r",
+											"    {\r",
+											"      \"name\": \"Vadonut\",\r",
+											"      \"image\": \"images/vadonut.png\",\r",
+											"      \"category\": \"appetizer\",\r",
+											"      \"label\": \"New\",\r",
+											"      \"price\": \"1.99\",\r",
+											"      \"featured\": \"false\",\r",
+											"      \"description\": \"A quintessential ConFusion experience, is it a vada or is it a donut?\",\r",
+											"      \"comments\": [ ]\r",
+											"    },\r",
+											"    {\r",
+											"      \"name\": \"ElaiCheese Cake\",\r",
+											"      \"image\": \"images/elaicheesecake.png\",\r",
+											"      \"category\": \"dessert\",\r",
+											"      \"label\": \"\",\r",
+											"      \"price\": \"2.99\",\r",
+											"      \"featured\": \"false\",\r",
+											"      \"description\": \"A delectable, semi-sweet New York Style Cheese Cake, with Graham cracker crust and spiced with Indian cardamoms\",\r",
+											"      \"comments\": [ ]\r",
+											"    }\r",
+											"  ]\r",
+											"};\r",
+											"\r",
+											"// Holds key: name and value: _id for each dish created\r",
+											"let dishNameList = new Object();\r",
+											"pm.environment.set('dishNameList', dishNameList);\r",
+											"// Holds key: _id and value name for each dish\r",
+											"let dishIdList = new Object();\r",
+											"pm.environment.set('dishIdList', dishIdList);\r",
+											"// obtain the adminToken\r",
+											"const adminToken = 'Bearer ' + pm.environment.get('admin_token');\r",
+											"const base_url = pm.collectionVariables.get(\"baseUrl\");\r",
+											"for (let i=0; i < DishObject.dishes.length; i++) {\r",
+											"    console.log(\"===> dish name: \", DishObject.dishes[i].name);\r",
+											"    let newDish = DishObject.dishes[i];\r",
+											"    // Send request to insert dish i into database\r",
+											"    pm.sendRequest({\r",
+											"        url: `${base_url}/dishes`, \r",
+											"        method:'POST', \r",
+											"        header: {'Content-Type' : 'application/json', 'Authorization': adminToken},\r",
+											"        body : {mode: 'raw', raw: newDish}},\r",
+											"        function(err, response) {\r",
+											"        if (err) {\r",
+											"            console.log(\"===> Callback: error\");\r",
+											"            console.log(err);\r",
+											"        } else if (pm.expect(response.status).to.eql('OK')) {\r",
+											"            console.log(\"===> Callback success\");\r",
+											"            var jsonData = response.json();\r",
+											"            // Now populate the global dicts\r",
+											"            let dishNameListDict = pm.environment.get('dishNameList');\r",
+											"            dishNameListDict[newDish.name] = jsonData._id;\r",
+											"            pm.environment.set('dishNameList', dishNameListDict);\r",
+											"            let dishIdListDict = pm.environment.get('dishIdList');\r",
+											"            dishIdListDict[jsonData._id] = newDish.name;  \r",
+											"            pm.environment.set('dishIdList',dishIdListDict);\r",
+											"        } else {\r",
+											"            console.log(\"===> Callback: not OK\");\r",
+											"            console.log(pm.response);\r",
+											"        }    \r",
+											"    });\r",
+											"}\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"CHECK_ALL_FOUR_DISHES_ADDED_1\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"    const jsonData = pm.response.json();\r",
+											"    // Check \r",
+											"\r",
+											"    const dishNameList = pm.environment.get('dishNameList');\r",
+											"    let keys = Object.keys(dishNameList);\r",
+											"    console.log(\"===> dishNameList keys: \\n\", keys);\r",
+											"\r",
+											"    const dishIdList = pm.environment.get('dishIdList');\r",
+											"    keys = Object.keys(dishIdList);\r",
+											"    console.log(\"===> dishIdList keys:\\n\", keys);  \r",
+											"    // Make sure all the dishes were set up\r",
+											"    pm.expect(jsonData.length).eql(4); \r",
+											"});\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/dishes",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"dishes"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "FAVORITES",
+					"item": [
+						{
+							"name": "GET_FAVORITES_REQUEST_USER_1",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// Setting up get request for registered user #1\r",
+											"var authTokenValue = \"Bearer \" + pm.environment.get(\"registered_logged_1_token\");\r",
+											"pm.request.headers.add({\r",
+											"    'key': \"Authorization\",\r",
+											"    'value': authTokenValue\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"GET_FAVORITES_REQUEST_USER_1_NONE_FOUND\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.length).to.eql(0);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/favorites",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"favorites"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET_FAVORITES_REQUEST_UNLOGGED_USER",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"GET_FAVORITES_REQUEST_UNLOGGED_USER\", function () {\r",
+											"    pm.response.to.have.status(401);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/favorites",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"favorites"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "FAVORITES_DISHID",
+					"item": [
+						{
+							"name": "GET_DISHID01_USER_1_FAIL",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// Setting up get request for registered user #1\r",
+											"var authTokenValue = \"Bearer \" + pm.environment.get(\"registered_logged_1_token\");\r",
+											"pm.request.headers.add({\r",
+											"    'key': \"Authorization\",\r",
+											"    'value': authTokenValue\r",
+											"});\r",
+											"\r",
+											"const dishNameList = pm.environment.get('dishNameList');\r",
+											"let keys = Object.keys(dishNameList);\r",
+											"let dishId01 = dishNameList[keys[0]]\r",
+											"pm.environment.set(\"dishId01\", dishId01);\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Get operation does not make sense for single user\r",
+											"pm.test(\"GET_DISHID01_USER_1_FAIL\", function () {\r",
+											"    pm.response.to.have.statusCodeClass(4);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/favorites/{{dishId01}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"favorites",
+										"{{dishId01}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POST_DISHID01_USER_1",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// Setting up get request for registered user #1\r",
+											"var authTokenValue = \"Bearer \" + pm.environment.get(\"registered_logged_1_token\");\r",
+											"pm.request.headers.add({\r",
+											"    'key': \"Authorization\",\r",
+											"    'value': authTokenValue\r",
+											"});\r",
+											"\r",
+											"const dishNameList = pm.environment.get('dishNameList');\r",
+											"let keys = Object.keys(dishNameList);\r",
+											"let dishId01 = dishNameList[keys[0]]\r",
+											"pm.environment.set(\"dishId01\", dishId01);\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"POST_DISHID01_USER_1\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"    let jsonData = pm.response.json();\r",
+											"    let dishList = jsonData.dishes;\r",
+											"    pm.expect(dishList).contains(pm.environment.get(\"dishId01\"));\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/favorites/{{dishId01}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"favorites",
+										"{{dishId01}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POST_GARBAGE_DISHID_USER_2",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// Setting up get request for registered user #1\r",
+											"var authTokenValue = \"Bearer \" + pm.environment.get(\"registered_logged_2_token\");\r",
+											"pm.request.headers.add({\r",
+											"    'key': \"Authorization\",\r",
+											"    'value': authTokenValue\r",
+											"});\r",
+											"\r",
+											"let garbageDishId = \"12345678900987654321\"\r",
+											"pm.environment.set(\"garbageDishId\", garbageDishId);\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"POST_DISHID01_USER_1\", function () {\r",
+											"    pm.response.to.have.status(500);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/favorites/{{garbageDishId}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"favorites",
+										"{{garbageDishId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET_FAVORITES_REQUEST_USER_1_ONE_FOUND",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// Setting up get request for registered user #1\r",
+											"var authTokenValue = \"Bearer \" + pm.environment.get(\"registered_logged_1_token\");\r",
+											"pm.request.headers.add({\r",
+											"    'key': \"Authorization\",\r",
+											"    'value': authTokenValue\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"GET_FAVORITES_REQUEST_USER_1_ONE_FOUND\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"    var jsonData = pm.response.json();\r",
+											"    var dishList = jsonData[0].dishes;\r",
+											"    pm.expect(dishList.length).to.eql(1);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/favorites",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"favorites"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POST_DISHID01_USER_1_FAIL",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// Setting up get request for registered user #1\r",
+											"var authTokenValue = \"Bearer \" + pm.environment.get(\"registered_logged_1_token\");\r",
+											"pm.request.headers.add({\r",
+											"    'key': \"Authorization\",\r",
+											"    'value': authTokenValue\r",
+											"});\r",
+											"// We will try to insert the same dish again as a favorite for user 1\r",
+											"const dishNameList = pm.environment.get('dishNameList');\r",
+											"let keys = Object.keys(dishNameList);\r",
+											"let dishId01 = dishNameList[keys[0]]\r",
+											"pm.environment.set(\"dishId01\", dishId01);\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"POST_DISHID01_USER_1_FAIL\", function () {\r",
+											"    pm.response.to.have.statusCodeClass(4);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/favorites/{{dishId01}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"favorites",
+										"{{dishId01}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POST_DISHID02_USER_1",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// Setting up get request for registered user #1\r",
+											"var authTokenValue = \"Bearer \" + pm.environment.get(\"registered_logged_1_token\");\r",
+											"pm.request.headers.add({\r",
+											"    'key': \"Authorization\",\r",
+											"    'value': authTokenValue\r",
+											"});\r",
+											"\r",
+											"const dishNameList = pm.environment.get('dishNameList');\r",
+											"let keys = Object.keys(dishNameList);\r",
+											"let dishId02 = dishNameList[keys[1]]\r",
+											"pm.environment.set(\"dishId02\", dishId02);\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"POST_DISHID02_USER_1\", function () {\r",
+											"    // Adding  a second favorite for user 1\r",
+											"    pm.response.to.have.status(200);\r",
+											"    let jsonData = pm.response.json();\r",
+											"    let dishList = jsonData.dishes;\r",
+											"    pm.expect(dishList).contains(pm.environment.get(\"dishId02\"));\r",
+											"    pm.expect(dishList.length).eql(2);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/favorites/{{dishId02}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"favorites",
+										"{{dishId02}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DELETE_DISHID01_USER_1",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// Setting up get request for registered user #1\r",
+											"var authTokenValue = \"Bearer \" + pm.environment.get(\"registered_logged_1_token\");\r",
+											"pm.request.headers.add({\r",
+											"    'key': \"Authorization\",\r",
+											"    'value': authTokenValue\r",
+											"});\r",
+											"\r",
+											"const dishNameList = pm.environment.get('dishNameList');\r",
+											"let keys = Object.keys(dishNameList);\r",
+											"let dishId01 = dishNameList[keys[0]]\r",
+											"pm.environment.set(\"dishId01\", dishId01);\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"DELETE_DISHID01_USER_1\", function () {\r",
+											"    // Adding  a second favorite for user 1\r",
+											"    pm.response.to.have.status(200);\r",
+											"    let jsonData = pm.response.json();\r",
+											"    let dishList = jsonData.dishes;\r",
+											"    pm.expect(dishList).contains(pm.environment.get(\"dishId02\"));\r",
+											"    pm.expect(dishList.length).eql(1);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/favorites/{{dishId01}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"favorites",
+										"{{dishId01}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DELETE_DISHID02_USER_2_FAIL",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// Setting up get request for registered user #2 - no favorites for this user\r",
+											"var authTokenValue = \"Bearer \" + pm.environment.get(\"registered_logged_2_token\");\r",
+											"pm.request.headers.add({\r",
+											"    'key': \"Authorization\",\r",
+											"    'value': authTokenValue\r",
+											"});\r",
+											"\r",
+											"const dishNameList = pm.environment.get('dishNameList');\r",
+											"let keys = Object.keys(dishNameList);\r",
+											"let dishId02 = dishNameList[keys[1]]\r",
+											"pm.environment.set(\"dishId02\", dishId02);\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"DELETE_DISHID02_USER_2_FAIL\", function () {\r",
+											"    // User #2 does not have any favorite dishes so deleting one not found\r",
+											"    // associated with the user\r",
+											"    pm.response.to.have.statusCodeClass(4);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/favorites/{{dishId01}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"favorites",
+										"{{dishId01}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DELETE_DISHIDX_USER_1_FAIL",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// Setting up get request for registered user #1\r",
+											"// for a garbage non-existing dish\r",
+											"var authTokenValue = \"Bearer \" + pm.environment.get(\"registered_logged_1_token\");\r",
+											"pm.request.headers.add({\r",
+											"    'key': \"Authorization\",\r",
+											"    'value': authTokenValue\r",
+											"});\r",
+											"\r",
+											"\r",
+											"let garbageDishId = \"12345678900987654321\"\r",
+											"pm.environment.set(\"garbageDishId\", garbageDishId);\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"DELETE_DISHIDX_USER_1_FAIL\", function () {\r",
+											"    // Adding  a second favorite for user 1\r",
+											"   pm.response.to.have.statusCodeClass(4);\r",
+											"\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/favorites/{{garbageDishId}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"favorites",
+										"{{garbageDishId}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "FAVORITE_DISHES",
+					"item": [
+						{
+							"name": "GET_FAVORITES_REQUEST_USER_1_AGAIN",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// Setting up get request for registered user #1\r",
+											"var authTokenValue = \"Bearer \" + pm.environment.get(\"registered_logged_1_token\");\r",
+											"pm.request.headers.add({\r",
+											"    'key': \"Authorization\",\r",
+											"    'value': authTokenValue\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"GET_FAVORITES_REQUEST_USER_1_AGAIN\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"    var jsonData = pm.response.json();\r",
+											"    var dishList = jsonData[0].dishes;\r",
+											"    pm.expect(jsonData.length).to.eql(1);\r",
+											"    // check this is dish02\r",
+											"    var dishIdList = pm.environment.get('dishIdList');\r",
+											"    var dishNameList = pm.environment.get('dishNameList');\r",
+											"    var dishName = dishList[0].name;\r",
+											"    var dishId = dishList[0]._id;\r",
+											"    pm.expect(dishName).eql(dishIdList[dishId]);\r",
+											"    pm.expect(dishId).eql(dishNameList[dishName]);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/favorites",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"favorites"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET_FAVORITES_REQUEST_USER_2_AGAIN",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// Setting up get request for registered user #1\r",
+											"var authTokenValue = \"Bearer \" + pm.environment.get(\"registered_logged_2_token\");\r",
+											"pm.request.headers.add({\r",
+											"    'key': \"Authorization\",\r",
+											"    'value': authTokenValue\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"GET_FAVORITES_REQUEST_USER_1_AGAIN\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.length).to.eql(0);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/favorites",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"favorites"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POST_TWO_NEW_DISHES_USER_1",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// Setting up get request for registered user #1\r",
+											"var authTokenValue = \"Bearer \" + pm.environment.get(\"registered_logged_1_token\");\r",
+											"pm.request.headers.add({\r",
+											"    'key': \"Authorization\",\r",
+											"    'value': authTokenValue\r",
+											"});\r",
+											"\r",
+											"const dishNameList = pm.environment.get('dishNameList');\r",
+											"let keys = Object.keys(dishNameList);\r",
+											"let dishId03 = dishNameList[keys[2]]\r",
+											"pm.environment.set(\"dishId03\", dishId03);\r",
+											"\r",
+											"let dishId04 = dishNameList[keys[3]]\r",
+											"pm.environment.set(\"dishId04\", dishId04);\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"POST_TWO_NEW_DISHES_USER_1\", function () {\r",
+											"    // User should have a total of 3 now\r",
+											"    pm.response.to.have.status(200);\r",
+											"    let jsonData = pm.response.json();\r",
+											"    let dishList = jsonData.dishes;\r",
+											"    pm.expect(dishList.length).eql(3);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "[\r\n   {\"_id\": \"{{dishId03}}\"},\r\n   {\"_id\": \"{{dishId04}}\"}\r\n]",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/favorites/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"favorites",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POST_TWO_NEW_DISHES_USER_1_ADD_SAME",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// Setting up get request for registered user #1\r",
+											"var authTokenValue = \"Bearer \" + pm.environment.get(\"registered_logged_1_token\");\r",
+											"pm.request.headers.add({\r",
+											"    'key': \"Authorization\",\r",
+											"    'value': authTokenValue\r",
+											"});\r",
+											"\r",
+											"const dishNameList = pm.environment.get('dishNameList');\r",
+											"let keys = Object.keys(dishNameList);\r",
+											"let dishId03 = dishNameList[keys[2]]\r",
+											"pm.environment.set(\"dishId03\", dishId03);\r",
+											"\r",
+											"let dishId04 = dishNameList[keys[3]]\r",
+											"pm.environment.set(\"dishId04\", dishId04);\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"POST_TWO_NEW_DISHES_USER_1_ADD_SAME\", function () {\r",
+											"    // User should have a total of 3 now\r",
+											"    pm.response.to.have.status(200);\r",
+											"    let jsonData = pm.response.json();\r",
+											"    let dishList = jsonData.dishes;\r",
+											"    pm.expect(dishList.length).eql(3);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "[\r\n   {\"_id\": \"{{dishId03}}\"},\r\n   {\"_id\": \"{{dishId04}}\"}\r\n]",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/favorites/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"favorites",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POST_TWO_NEW_DISHES_USER_2",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// Setting up get request for registered user #1\r",
+											"var authTokenValue = \"Bearer \" + pm.environment.get(\"registered_logged_2_token\");\r",
+											"pm.request.headers.add({\r",
+											"    'key': \"Authorization\",\r",
+											"    'value': authTokenValue\r",
+											"});\r",
+											"\r",
+											"const dishNameList = pm.environment.get('dishNameList');\r",
+											"let keys = Object.keys(dishNameList);\r",
+											"let dishId03 = dishNameList[keys[2]]\r",
+											"pm.environment.set(\"dishId03\", dishId03);\r",
+											"\r",
+											"let dishId04 = dishNameList[keys[3]]\r",
+											"pm.environment.set(\"dishId04\", dishId04);\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"POST_TWO_NEW_DISHES_USER_2\", function () {\r",
+											"    // User should have a total of 2, from the 0 they started with\r",
+											"    pm.response.to.have.status(200);\r",
+											"    let jsonData = pm.response.json();\r",
+											"    let dishList = jsonData.dishes;\r",
+											"    pm.expect(dishList.length).eql(2);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "[\r\n   {\"_id\": \"{{dishId03}}\"},\r\n   {\"_id\": \"{{dishId04}}\"}\r\n]",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/favorites/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"favorites",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DELETE_ALL_USER_1_FAVORITES",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// Setting up get request for registered user #1\r",
+											"var authTokenValue = \"Bearer \" + pm.environment.get(\"registered_logged_1_token\");\r",
+											"pm.request.headers.add({\r",
+											"    'key': \"Authorization\",\r",
+											"    'value': authTokenValue\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('DELETE_ALL_USER_1_FAVORITES', function() {\r",
+											"    pm.response.to.have.status(200);\r",
+											"    const responseJson = pm.response.json();\r",
+											"    pm.expect(responseJson.n).to.eql(1);\r",
+											"    pm.expect(responseJson.ok).to.eql(1);\r",
+											"   \r",
+											" })"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/favorites",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"favorites"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DELETE_ALL_USER_2_FAVORITES",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// Setting up get request for registered user #1\r",
+											"var authTokenValue = \"Bearer \" + pm.environment.get(\"registered_logged_2_token\");\r",
+											"pm.request.headers.add({\r",
+											"    'key': \"Authorization\",\r",
+											"    'value': authTokenValue\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('DELETE_ALL_USER_2_FAVORITES', function() {\r",
+											"    pm.response.to.have.status(200);\r",
+											"    const responseJson = pm.response.json();\r",
+											"    pm.expect(responseJson.n).to.eql(1);\r",
+											"    pm.expect(responseJson.ok).to.eql(1);\r",
+											" })"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/favorites",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"favorites"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DELETE_ALL_USER_2_NO_FAVORITES",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// Setting up get request for registered user #1\r",
+											"var authTokenValue = \"Bearer \" + pm.environment.get(\"registered_logged_2_token\");\r",
+											"pm.request.headers.add({\r",
+											"    'key': \"Authorization\",\r",
+											"    'value': authTokenValue\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('DELETE_ALL_USER_1_FAVORITES', function() {\r",
+											"    pm.response.to.have.status(200);\r",
+											"    const responseJson = pm.response.json();\r",
+											"    pm.expect(responseJson.n).to.eql(0);\r",
+											"    pm.expect(responseJson.ok).to.eql(1);\r",
+											" })"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/favorites",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"favorites"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET_FAVORITES_REQUEST_USER_1_AGAIN_2",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// Setting up get request for registered user #1\r",
+											"var authTokenValue = \"Bearer \" + pm.environment.get(\"registered_logged_1_token\");\r",
+											"pm.request.headers.add({\r",
+											"    'key': \"Authorization\",\r",
+											"    'value': authTokenValue\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"GET_FAVORITES_REQUEST_USER_1_AGAIN_2\", function () {\r",
+											"     pm.response.to.have.status(200);\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.length).to.eql(0);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/favorites",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"favorites"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET_FAVORITES_REQUEST_USER_2_AGAIN_2",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// Setting up get request for registered user #1\r",
+											"var authTokenValue = \"Bearer \" + pm.environment.get(\"registered_logged_2_token\");\r",
+											"pm.request.headers.add({\r",
+											"    'key': \"Authorization\",\r",
+											"    'value': authTokenValue\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"GET_FAVORITES_REQUEST_USER_1_AGAIN_2\", function () {\r",
+											"     pm.response.to.have.status(200);\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.length).to.eql(0);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/favorites",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"favorites"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "CLEANUP",
+					"item": [
+						{
+							"name": "DELETE_ALL_DISHES_ADMIN",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('DELETE_DISHID_ADMIN', function() {\r",
+											"    pm.response.to.have.status(200);\r",
+											"    const responseJson = pm.response.json();\r",
+											"    pm.expect(responseJson.n).to.eql(4);\r",
+											"    pm.expect(responseJson.ok).to.eql(1);\r",
+											" })"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var authTokenValue = \"Bearer \" + pm.environment.get(\"admin_token\");\r",
+											"pm.request.headers.add({\r",
+											"    'key': \"Authorization\",\r",
+											"    'value': authTokenValue\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/dishes",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"dishes"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET_ALL_DISHES_CHECK_ALL_GONE",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('GET_ALL_DISHES_CHECK_ALL_GONE', function() {\r",
+											"    pm.response.to.have.status(200);\r",
+											"    const responseJson = pm.response.json();\r",
+											"    pm.expect(responseJson.length).to.eql(0);\r",
+											" })"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/dishes",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"dishes"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:3000",
+			"type": "string"
+		},
+		{
+			"key": "admin_username",
+			"value": "admin",
+			"type": "string"
+		},
+		{
+			"key": "admin_password",
+			"value": "password",
+			"type": "string"
+		}
+	]
+}
